@@ -8,6 +8,8 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+const booksRouter = require('./routes/books')
+
 const http = require('http')
 const server = http.createServer(app)
 
@@ -19,6 +21,8 @@ app.use(cors(config.cors))
 mongoose.connect(config.mongoKey, () => { 
     console.log('Connected to MongoDB')
 })
+
+app.use('/books', booksRouter)
 
 server.listen(config.port, () => { 
     console.log(`Server listening on port ${config.port}`)
