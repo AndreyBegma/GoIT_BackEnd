@@ -31,3 +31,25 @@ module.exports.FindById = async (req,res) => {
       }
     }
 }
+
+module.exports.RemoveBook = async (req,res) => { 
+    const {error} = validator.RemoveBook(req.query)
+    if (error) {
+        await res.status(400).send(error.details[0].message)
+    } else {
+        await BooksModel.findByIdAndDelete(req.query.id)
+          .then(() => res.status(200).send('Book removed successfully'))
+          .catch(err => res.status(400).send(err))
+    }
+}
+
+module.exports.UpdateBook = async (req,res) => { 
+    const {error} = validator.UpdateBook(req.body)
+    if (error) {
+        await res.status(400).send(error.details[0].message)
+    } else {
+        await BooksModel.findByIdAndUpdate(req.body.id, req.body, {new: true})
+         .then(() => res.status(200).send('Book updated successfully'))
+         .catch(err => res.status(400).send(err))
+    }
+}
