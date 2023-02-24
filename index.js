@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cors(config.cors))
 
+mongoose.connect(config.mongoKey, () => { 
+    console.log('Connected to MongoDB')
+})
+
 server.listen(config.port, () => { 
     console.log(`Server listening on port ${config.port}`)
 })
