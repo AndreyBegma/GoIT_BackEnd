@@ -49,7 +49,30 @@ module.exports.UpdateBook = async (req,res) => {
         await res.status(400).send(error.details[0].message)
     } else {
         await BooksModel.findByIdAndUpdate(req.body.id, req.body, {new: true})
-         .then(() => res.status(200).send('Book updated successfully'))
+         .then(() => res.status(200).send({
+            id: req.body.id,
+            title: req.body.title,
+            author: req.body.author
+         }))
          .catch(err => res.status(400).send(err))
+    }
+}
+
+module.exports.GetListBooks = async (req,res) => { 
+    const {error} = validator.GetBooksList(req.query)
+    if (error) {
+        await res.status(400).send(error.details[0].message)
+    } else {
+        firstItem = (req.query.page * req.query.limit) - req.query.limit - 1
+        firstItem = (firstItem < 0)? 0 : firstItem
+        let books = await BooksModel.find()
+        .skip(firstItem)
+        .limit(req.query.limit)
+
+        if (books){ 
+            await res.status(200).send(books)
+        } else { 
+            await res.status(404).send('No books found')
+        }
     }
 }
