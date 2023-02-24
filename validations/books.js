@@ -10,7 +10,7 @@ exports.GetBooksList = (data => {
 
 exports.GetBookById = (data => { 
     const schema = joi.object({
-        id: joi.string().min(1).required(),
+        id: joi.string().min(12).required(),
     })
     return schema.validate(data)
 })
